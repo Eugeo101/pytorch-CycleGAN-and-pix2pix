@@ -27,17 +27,17 @@ def check_matching_pair(segmap_path, photo_path):
 
 def process_cityscapes(gtFine_dir, leftImg8bit_dir, output_dir, phase):
     save_phase = 'test' if phase == 'val' else 'train'
-    savedir = os.path.join(output_dir, save_phase)
+    savedir = os.path.join(output_dir, save_phase).replace("\\", "/")
     os.makedirs(savedir, exist_ok=True)
     os.makedirs(savedir + 'A', exist_ok=True)
     os.makedirs(savedir + 'B', exist_ok=True)
     print("Directory structure prepared at %s" % output_dir)
     
-    segmap_expr = os.path.join(gtFine_dir, phase) + "/*/*_color.png"
+    segmap_expr = os.path.join(gtFine_dir, phase).replace("\\", "/") + "/*/*_color.png"
     segmap_paths = glob.glob(segmap_expr)
     segmap_paths = sorted(segmap_paths)
 
-    photo_expr = os.path.join(leftImg8bit_dir, phase) + "/*/*_leftImg8bit.png"
+    photo_expr = os.path.join(leftImg8bit_dir, phase).replace("\\", "/") + "/*/*_leftImg8bit.png"
     photo_paths = glob.glob(photo_expr)
     photo_paths = sorted(photo_paths)
 
@@ -53,13 +53,13 @@ def process_cityscapes(gtFine_dir, leftImg8bit_dir, output_dir, phase):
         sidebyside = Image.new('RGB', (512, 256))
         sidebyside.paste(segmap, (256, 0))
         sidebyside.paste(photo, (0, 0))
-        savepath = os.path.join(savedir, "%d.jpg" % i)
+        savepath = os.path.join(savedir, "%d.jpg" % i).replace("\\", "/")
         sidebyside.save(savepath, format='JPEG', subsampling=0, quality=100)
 
         # data for cyclegan where the two images are stored at two distinct directories
-        savepath = os.path.join(savedir + 'A', "%d_A.jpg" % i)
+        savepath = os.path.join(savedir + 'A', "%d_A.jpg" % i).replace("\\", "/")
         photo.save(savepath, format='JPEG', subsampling=0, quality=100)
-        savepath = os.path.join(savedir + 'B', "%d_B.jpg" % i)
+        savepath = os.path.join(savedir + 'B', "%d_B.jpg" % i).replace("\\", "/")
         segmap.save(savepath, format='JPEG', subsampling=0, quality=100)
         
         if i % (len(segmap_paths) // 10) == 0:

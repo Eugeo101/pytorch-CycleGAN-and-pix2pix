@@ -21,7 +21,7 @@ class HTML:
         """
         self.title = title
         self.web_dir = web_dir
-        self.img_dir = os.path.join(self.web_dir, 'images')
+        self.img_dir = os.path.join(self.web_dir, 'images').replace("\\", "/")
         if not os.path.exists(self.web_dir):
             os.makedirs(self.web_dir)
         if not os.path.exists(self.img_dir):
@@ -60,8 +60,8 @@ class HTML:
                 for im, txt, link in zip(ims, txts, links):
                     with td(style="word-wrap: break-word;", halign="center", valign="top"):
                         with p():
-                            with a(href=os.path.join('images', link)):
-                                img(style="width:%dpx" % width, src=os.path.join('images', im))
+                            with a(href=os.path.join('images', link).replace("\\", "/")):
+                                img(style="width:%dpx" % width, src=os.path.join('images', im).replace("\\", "/"))
                             br()
                             p(txt)
 
